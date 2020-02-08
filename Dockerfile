@@ -11,4 +11,4 @@ RUN go build server.go
 FROM alpine
 COPY --from=builder /go/src/github.com/Jun1Kato/chat-bot-go /app
 
-CMD /app/server $PORT
+CMD /app/server $PORT $CHANNEL_SECRET $ACCESS_TOKEN

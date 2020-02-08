@@ -17,9 +17,11 @@ const (
 
 func main() {
 	port := os.Args[1]
+	channelSecret := os.Args[2]
+	accessToken := os.Args[3]
 
-	if port == "" {
-		panic("$PORT must be set")
+	if port == "" || channelSecret == "" || accessToken == "" {
+		panic("$PORT and $CHANNEL_SECRET and $ACCESS_TOKEN must be set")
 	}
 	fmt.Println("chat-bot-server start")
 
@@ -29,7 +31,7 @@ func main() {
 	// webhook
 	router.POST("/webhook", func(c *gin.Context) {
 		client := &http.Client{Timeout: time.Duration(15 * time.Second)}
-		bot, err := linebot.New("5d6f5529f1253a9a07de0b40215c7891", "Mx6dn8QZIdaKC8UKDF3/qgKs7ghHxeAiGEpo+qm6dKRg3/oko8juXGPDmn7udT63zOsFxIhXjyxzc7EvPH9GMOczRbngyalA2j4EDdrzZWeL80pSG1LPImWy4Z0hPREX6UfkOYGvdtOBelhRduMpfgdB04t89/1O/w1cDnyilFU=", linebot.WithHTTPClient(client))
+		bot, err := linebot.New(channelSecret, accessToken, linebot.WithHTTPClient(client))
 		if err != nil {
 			fmt.Println(err)
 			return
